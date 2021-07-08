@@ -1,8 +1,6 @@
 import 'package:database/CreateProgram.dart';
-import 'package:database/Home.dart';
 import 'package:database/databasehelper.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateCompany extends StatefulWidget {
   CreateCompany({Key key}) : super(key: key);
@@ -11,22 +9,9 @@ class CreateCompany extends StatefulWidget {
 }
 
 class _CreateCompanyState extends State<CreateCompany> {
-  // read() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final key = 'token';
-  //   final value = prefs.get(key) ?? 0;
-  //   if (value != '0') {
-  //     Navigator.of(context).push(
-  //         new MaterialPageRoute(
-  //           builder: (BuildContext context) => new Home(),
-  //         )
-  //     );
-  //   }
-  // }
 
   @override
   initState() {
-    read();
   }
 
   DatabaseHelper databaseHelper = new DatabaseHelper();
@@ -150,7 +135,7 @@ class _CreateCompanyState extends State<CreateCompany> {
                               style: TextStyle(color: Colors.blueAccent.shade700),
                             ),
                             content:
-                                Text("Please input your email and password"),
+                                Text("Please input the required information"),
                             actions: [
                               FlatButton(
                                   onPressed: () {
@@ -167,9 +152,9 @@ class _CreateCompanyState extends State<CreateCompany> {
                     setState(() {
                       databaseHelper.CreateCompany(
                           _nameController.text.trim(),
+                          _passwordController.text.trim(),
                           _emailController.text.trim(),
-                          _addressController.text.trim(),
-                          _passwordController.text.trim());
+                          _addressController.text.trim());
                     });
                   Navigator.pushAndRemoveUntil(
                     context,

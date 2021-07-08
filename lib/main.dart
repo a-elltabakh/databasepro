@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         '/AddCustomer': (BuildContext context) => new AddCustomer(),
 
       },
-      home: new CreateCompany(),
+      home: new CreateProgram(),
     );
   }
 }
