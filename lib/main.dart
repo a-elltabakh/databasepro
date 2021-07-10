@@ -1,4 +1,5 @@
 import 'package:database/AddCustomer.dart';
+import 'package:database/AddServices.dart';
 import 'package:database/CreateCompany.dart';
 import 'package:database/CreateProgram.dart';
 import 'package:database/Home.dart';
@@ -21,9 +22,10 @@ class MyApp extends StatelessWidget {
         '/CreateCompany': (BuildContext context) => new CreateCompany(),
         '/CreateProgram': (BuildContext context) => new CreateProgram(),
         '/AddCustomer': (BuildContext context) => new AddCustomer(),
+        '/AddServices': (BuildContext context) => new AddServices(),
 
       },
-      home: new CreateProgram(),
+      home: new LoginPage(),
     );
   }
 }

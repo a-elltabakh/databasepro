@@ -1,4 +1,4 @@
-import 'package:database/CreateProgram.dart';
+import 'package:database/Home.dart';
 import 'package:database/databasehelper.dart';
 import 'package:flutter/material.dart';
 
@@ -22,35 +22,23 @@ class _CreateCompanyState extends State<CreateCompany> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(appBar: AppBar(
+      title: Text(
+        "Create Company",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+            color: Colors.white,
+            fontSize: 22.0,
+            fontFamily: 'Raleway',
+            fontWeight: FontWeight.bold),
+      ),
+      backgroundColor: Colors.blueAccent.shade700,
+    ),
         backgroundColor: Colors.white,
         body: new ListView(
           children: [
             SizedBox(height:13),
-            new Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(
-                left: 10.5,
-              ),
-              child: Text(
-                "Medical Insurance System",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.blueAccent.shade700,
-                    fontSize: 30.0,
-                    fontFamily: 'Raleway',
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            new Padding(padding: EdgeInsets.only(top: 100)),
-            new Container(
-              alignment: Alignment.center,
-              child: new Image.asset(
-                'img/Capture.jpg',
-                height: 150.0,
-                width: 500.0,
-              ),
-            ),
+
             SizedBox(height:50),
             new Container(
               alignment: Alignment.center,
@@ -156,16 +144,13 @@ class _CreateCompanyState extends State<CreateCompany> {
                           _emailController.text.trim(),
                           _addressController.text.trim());
                     });
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => CreateProgram()),
-                    ModalRoute.withName('/CreateProgram'),
-                  );
+                    Navigator.of(context).pop(new MaterialPageRoute(
+                      builder: (BuildContext context) => new Home(),
+                    ));
                    }
                 },
                 child: Text(
-                  "Create Company",
+                  "Create ",
                   style: TextStyle(
                     fontSize: 24,
                     fontFamily: 'Raleway',

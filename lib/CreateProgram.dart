@@ -1,11 +1,7 @@
 import 'dart:convert';
-
-import 'package:database/AddCustomer.dart';
 import 'package:database/Home.dart';
 import 'package:database/databasehelper.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class CreateProgram extends StatefulWidget {
@@ -26,6 +22,7 @@ class _CreateProgramState extends State<CreateProgram> {
   DatabaseHelper databaseHelper = new DatabaseHelper();
   final TextEditingController _programController = new TextEditingController();
   final TextEditingController _balanceController = new TextEditingController();
+
   Future<String> GetCompanies() async {
     final response = await http.get(
       Uri.parse("https://insurance-sys.herokuapp.com/company/get-companies/"),
@@ -165,16 +162,13 @@ class _CreateProgramState extends State<CreateProgram> {
                           _myComp.trim());
                     });
 
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => AddCustomer()),
-                      ModalRoute.withName('/AddCustomer'),
-                    );
+                    Navigator.of(context).pop(new MaterialPageRoute(
+                      builder: (BuildContext context) => new Home(),
+                    ));
                   }
                 },
                 child: Text(
-                  "Create Program",
+                  "Create ",
                   style: TextStyle(
                     fontSize: 24,
                     fontFamily: 'Raleway',

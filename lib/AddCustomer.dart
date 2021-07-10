@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'package:database/Home.dart';
 import 'package:database/databasehelper.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AddCustomer extends StatefulWidget {
   AddCustomer({Key key}) : super(key: key);
@@ -10,18 +11,36 @@ class AddCustomer extends StatefulWidget {
 }
 
 class _AddCustomerState extends State<AddCustomer> {
-
   @override
   initState() {
+    super.initState();
+    GetPrograms();
   }
 
+  List programs;
+  String _myProgram;
   DatabaseHelper databaseHelper = new DatabaseHelper();
-  final TextEditingController _programController = new TextEditingController();
   final TextEditingController _firstController = new TextEditingController();
   final TextEditingController _lastController = new TextEditingController();
   final TextEditingController _addressController = new TextEditingController();
   final TextEditingController _phoneController = new TextEditingController();
   final TextEditingController _emailController = new TextEditingController();
+  final TextEditingController _currentBalanceController = new TextEditingController();
+
+  Future<String> GetPrograms() async {
+    final response = await http.get(
+      Uri.parse("https://insurance-sys.herokuapp.com/program/get-program/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(response.statusCode);
+    var data = json.decode(response.body);
+    setState(() {
+      programs = data['allPrograms'];
+    });
+    print(data);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,22 +60,42 @@ class _AddCustomerState extends State<AddCustomer> {
         backgroundColor: Colors.white,
         body: new ListView(
           children: [
-            SizedBox(height:50),
-            new Container(
-              alignment: Alignment.center,
-              margin: EdgeInsets.only(left: 22, right: 22),
-              child: new TextField(
-                controller: _programController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(67)),
-                  labelText: 'program',
-
+            SizedBox(height: 50),
+            Center(
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(left: 22, right: 22),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(67),
+                    border: Border.all(
+                      color: Colors.grey,
+                    )),
+                child: DropdownButton<String>(
+                  value: _myProgram,
+                  hint: Text(
+                    "   Select Program",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontFamily: 'Raleway', fontWeight: FontWeight.bold),
+                  ),
+                  isExpanded: true,
+                  onChanged: (String newVal) {
+                    setState(() {
+                      _myProgram = newVal;
+                      print(_myProgram);
+                    });
+                  },
+                  items: programs?.map((item) {
+                        return new DropdownMenuItem(
+                          child: new Text(item['programName']),
+                          value: item['programID'].toString(),
+                        );
+                      })?.toList() ??
+                      [],
                 ),
               ),
             ),
-            SizedBox(height:15),
+            SizedBox(height: 15),
             new Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -67,13 +106,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'First Name',
-                  prefixIcon:
-                  new Icon(Icons.person_rounded , color: Colors.blueAccent.shade700),
-
+                  prefixIcon: new Icon(Icons.person_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
-            SizedBox(height:15),
+            SizedBox(height: 15),
             new Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -84,13 +122,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Last Name',
-                  prefixIcon:
-                  new Icon(Icons.person_rounded , color: Colors.blueAccent.shade700),
-
+                  prefixIcon: new Icon(Icons.person_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
-            SizedBox(height:15),
+            SizedBox(height: 15),
             new Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -101,12 +138,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Address',
-                  prefixIcon:
-                  new Icon(Icons.home_rounded , color: Colors.blueAccent.shade700),
+                  prefixIcon: new Icon(Icons.home_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
-            SizedBox(height:15),
+            SizedBox(height: 15),
             new Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -117,13 +154,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Phone Number',
-                  prefixIcon:
-                  new Icon(Icons.phone_rounded , color: Colors.blueAccent.shade700),
-
+                  prefixIcon: new Icon(Icons.phone_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
-            SizedBox(height:15),
+            SizedBox(height: 15),
             new Container(
               alignment: Alignment.center,
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -134,14 +170,12 @@ class _AddCustomerState extends State<AddCustomer> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Email',
-                  prefixIcon:
-                  new Icon(Icons.mail_rounded, color: Colors.blueAccent.shade700),
-
+                  prefixIcon: new Icon(Icons.mail_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
-
-            SizedBox(height:60),
+            SizedBox(height: 60),
             new Container(
               margin: EdgeInsets.only(left: 22, right: 22),
               height: 48,
@@ -149,14 +183,52 @@ class _AddCustomerState extends State<AddCustomer> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 onPressed: () {
-
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (BuildContext context) => Home()),
-                    ModalRoute.withName('/Home'),
-                  );
-                  //  }
+                  if (_firstController.text.trim().isEmpty ||
+                      _lastController.text.trim().isEmpty ||
+                      _addressController.text.trim().isEmpty ||
+                      _phoneController.text.trim().isEmpty ||
+                      _emailController.text.trim().isEmpty ||
+                      _currentBalanceController.text.trim().isEmpty ||
+                      _myProgram.trim().isEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: new Text(
+                              'Complete',
+                              style:
+                                  TextStyle(color: Colors.blueAccent.shade700),
+                            ),
+                            content:
+                                Text("Please input the required information"),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: new Text(
+                                    'Ok',
+                                    style:
+                                        TextStyle(color: Colors.blue.shade700),
+                                  ))
+                            ],
+                          );
+                        });
+                  } else {
+                    setState(() {
+                      databaseHelper.AddCustomer(
+                          _firstController.text.trim(),
+                          _lastController.text.trim(),
+                          _addressController.text.trim(),
+                          _emailController.text.trim(),
+                          _phoneController.text.trim(),
+                          _currentBalanceController.text.trim(),
+                          _myProgram.trim());
+                    });
+                    Navigator.of(context).pop(new MaterialPageRoute(
+                      builder: (BuildContext context) => new Home(),
+                    ));
+                  }
                 },
                 child: Text(
                   "Add",

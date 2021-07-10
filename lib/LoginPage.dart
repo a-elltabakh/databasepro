@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   initState() {
-    read();
+   // read();
   }
 
   DatabaseHelper databaseHelper = new DatabaseHelper();

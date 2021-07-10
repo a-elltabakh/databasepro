@@ -6,12 +6,7 @@ class DatabaseHelper {
   var status;
   var token;
 
-  Future<Company> CreateCompany(
-    String name,
-    String password,
-    String email,
-    String adress,
-  ) async {
+  Future<Company> CreateCompany(String name,String password,String email,String adress,) async {
     final response = await http.post(
         Uri.parse("https://insurance-sys.herokuapp.com/company/add-company/"),
         headers: <String, String>{
@@ -32,9 +27,8 @@ class DatabaseHelper {
     }));
   }
 
-  Future<Program> CreateProgram(String programName,
-      String maxBalance, String companyId) async {
-    final response = await http.post(Uri.parse("https://insurance-sys.herokuapp.com/program/add-program"),
+  Future<Program> CreateProgram(String programName,String maxBalance, String companyId) async {
+    final response = await http.post(Uri.parse("https://insurance-sys.herokuapp.com/program/add-program/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -52,49 +46,34 @@ class DatabaseHelper {
 
   }
 
-  Future<Customer> AddCustomer(
-      String program,
-      String firstName,
-      String lastName,
-      String address,
-      String phone,
-      String email,
-      int programId) async {
-    final response = await http.post(Uri.parse("https://host/customers/"),
+  Future<Customer> AddCustomer(String firstName,String lastName,String adress,String phone,String email, String currentBalance,String programId) async {
+    final response = await http.post(Uri.parse("https://insurance-sys.herokuapp.com/customer/add-customer/"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          "program": "$program",
-          "first Name": "$firstName",
-          "last Name": "$lastName",
-          "address": "$address",
+          "firstName": "$firstName",
+          "lastName": "$lastName",
+          "adress": "$adress",
           "phone": "$phone",
           "email": "$email",
-          "program Id": "$programId",
+          "current_balance": "$currentBalance",
+          "ProgramID": "$programId",
         }));
     print(response.statusCode);
-    // var data = json.decode(response.body);
-    // if (status = response.body.contains('non_field_errors')) {
-    //   print('data : ${data["non_field_errors"]}');
-    // } else {
-    //   print('data : ${data["token"]}');
-    //   _save(data["token"]);
-    // }
+    print(jsonEncode(<String, String>{
+      "firstName": "$firstName",
+      "lastName": "$lastName",
+      "adress": "$adress",
+      "phone": "$phone",
+      "email": "$email",
+      "current_balance": "$currentBalance",
+      "ProgramID": "$programId",
+    }));
+
   }
 
-  Future<String> GetCompanies() async {
-    List compList;
-    String _myComp;
-    List compIdList;
-    final response = await http.get(
-      Uri.parse("https://insurance-sys.herokuapp.com/company/get-companies/"),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-    );
-    print(response.statusCode);
-  }
+
 }
 
 class Company {
@@ -107,9 +86,10 @@ class Company {
   factory Company.fromJson(Map<String, dynamic> json) {
     return Company(
       name: json['name'],
-      email: json['email'],
-      address: json['address'],
       password: json['password'],
+      email: json['email'],
+      address: json['adress'],
+
     );
   }
 }
@@ -122,9 +102,9 @@ class Program {
   Program({this.programName, this.maxBalance, this.companyID});
   factory Program.fromJson(Map<String, dynamic> json) {
     return Program(
-      programName: json['programName'],
-      maxBalance: json['maxBalance'],
-      companyID: json['companyID'],
+      programName: json['program_name'],
+      maxBalance: json['max_balance'],
+      companyID: json['company_id'],
     );
   }
 }
@@ -133,46 +113,49 @@ class Customer {
   final String firstName;
   final String lastName;
   final String phone;
-  final String address;
+  final String adress;
   final String email;
+  final String currentBalance;
   final int programID;
 
   Customer(
       {this.firstName,
       this.lastName,
-      this.address,
+      this.adress,
       this.phone,
       this.email,
+      this.currentBalance,
       this.programID});
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       firstName: json['firstName'],
       lastName: json['lastName'],
-      address: json['address'],
+      adress: json['adress'],
       phone: json['phone'],
       email: json['email'],
+      currentBalance: json['current_balance'],
       programID: json['programID'],
     );
   }
 }
 
-_save(String token) async {
-  final prefs = await SharedPreferences.getInstance();
-  final key = 'token';
-  final value = token;
-  prefs.setString(key, value);
-}
-
-read() async {
-  final prefs = await SharedPreferences.getInstance();
-  final key = 'token';
-  final value = prefs.get(key) ?? 0;
-  print('read : $value');
-}
+// _save(String token) async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final key = 'token';
+//   final value = token;
+//   prefs.setString(key, value);
+// }
+//
+// read() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   final key = 'token';
+//   final value = prefs.get(key) ?? 0;
+//   print('read : $value');
+// }
 
 // Future<Login> loginData(String email, String password) async {
 //   final response = await http.post(
-//       Uri.parse("https://mahdy.pythonanywhere.com/api/users/signin/"),
+//       Uri.parse("https://host.com/signin/"),
 //       headers: <String, String>{
 //         'Content-Type': 'application/json; charset=UTF-8',
 //       },
