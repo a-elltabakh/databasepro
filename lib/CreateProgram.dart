@@ -97,7 +97,7 @@ class _CreateProgramState extends State<CreateProgram> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _programController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
@@ -111,7 +111,7 @@ class _CreateProgramState extends State<CreateProgram> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _balanceController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),

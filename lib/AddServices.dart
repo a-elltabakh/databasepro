@@ -15,6 +15,7 @@ class _AddServicesState extends State<AddServices> {
   initState() {
     super.initState();
     GetPrograms();
+    GetServices();
   }
 
   List programs;
@@ -22,10 +23,11 @@ class _AddServicesState extends State<AddServices> {
   List Services;
   String _myServices;
   DatabaseHelper databaseHelper = new DatabaseHelper();
-
+  final TextEditingController _discountController = new TextEditingController();
+  final TextEditingController _maxDiscountController = new TextEditingController();
   Future<String> GetPrograms() async {
     final response = await http.get(
-      Uri.parse("https://insurance-sys.herokuapp.com/program/get-program/"),
+      Uri.parse("https://insurance-sys.herokuapp.com/program/get-programs/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -37,27 +39,27 @@ class _AddServicesState extends State<AddServices> {
     });
     print(data);
   }
-  // Future<String> GetServices() async {
-  //   final response = await http.get(
-  //     Uri.parse("https://insurance-sys.herokuapp.com/"),
-  //     headers: <String, String>{
-  //       'Content-Type': 'application/json; charset=UTF-8',
-  //     },
-  //   );
-  //   print(response.statusCode);
-  //   var data2 = json.decode(response.body);
-  //   setState(() {
-  //     Services = data2['allServices'];
-  //   });
-  //   print(data2);
-  // }
+  Future<String> GetServices() async {
+    final response = await http.get(
+      Uri.parse("https://insurance-sys.herokuapp.com/service/get-services/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    print(response.statusCode);
+    var data2 = json.decode(response.body);
+    setState(() {
+      Services = data2['allServices'];
+    });
+    print(data2);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Add Services",
+            "Add Services to program",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: Colors.white,
@@ -98,7 +100,7 @@ class _AddServicesState extends State<AddServices> {
                   items: programs?.map((item) {
                     return new DropdownMenuItem(
                       child: new Text(item['programName']),
-                      value: item['programID'].toString(),
+                      value: item['ProgramID'].toString(),
                     );
                   })?.toList() ??
                       [],
@@ -132,8 +134,8 @@ class _AddServicesState extends State<AddServices> {
                   },
                   items: Services?.map((item) {
                     return new DropdownMenuItem(
-                      child: new Text(item['programName']),
-                      value: item['programID'].toString(),
+                      child: new Text(item['serviceName']),
+                      value: item['ServiceID'].toString(),
                     );
                   })?.toList() ??
                       [],
@@ -141,22 +143,38 @@ class _AddServicesState extends State<AddServices> {
               ),
             ),
 
-            // SizedBox(height: 15),
-            // new Container(
-            //   alignment: Alignment.center,
-            //   margin: EdgeInsets.only(left: 22, right: 22),
-            //   child: new TextField(
-            //     controller: _emailController,
-            //     keyboardType: TextInputType.emailAddress,
-            //     decoration: InputDecoration(
-            //       border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(67)),
-            //       labelText: 'Email',
-            //       prefixIcon: new Icon(Icons.mail_rounded,
-            //           color: Colors.blueAccent.shade700),
-            //     ),
-            //   ),
-            // ),
+            SizedBox(height: 15),
+            new Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 22, right: 22),
+              child: new TextField(
+                controller: _discountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(67)),
+                  labelText: 'Discount',
+                  prefixIcon: new Icon(Icons.attach_money_rounded,
+                      color: Colors.blueAccent.shade700),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            new Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 22, right: 22),
+              child: new TextField(
+                controller: _maxDiscountController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(67)),
+                  labelText: 'Max Discount',
+                  prefixIcon: new Icon(Icons.attach_money_rounded,
+                      color: Colors.blueAccent.shade700),
+                ),
+              ),
+            ),
             SizedBox(height: 60),
             new Container(
               margin: EdgeInsets.only(left: 22, right: 22),
@@ -165,52 +183,46 @@ class _AddServicesState extends State<AddServices> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 onPressed: () {
-                  // if (_firstController.text.trim().isEmpty ||
-                  //     _lastController.text.trim().isEmpty ||
-                  //     _addressController.text.trim().isEmpty ||
-                  //     _phoneController.text.trim().isEmpty ||
-                  //     _emailController.text.trim().isEmpty ||
-                  //     _currentBalanceController.text.trim().isEmpty ||
-                  //     _myProgram.trim().isEmpty) {
-                  //   showDialog(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return AlertDialog(
-                  //           title: new Text(
-                  //             'Complete',
-                  //             style:
-                  //             TextStyle(color: Colors.blueAccent.shade700),
-                  //           ),
-                  //           content:
-                  //           Text("Please input the required information"),
-                  //           actions: [
-                  //             FlatButton(
-                  //                 onPressed: () {
-                  //                   Navigator.pop(context);
-                  //                 },
-                  //                 child: new Text(
-                  //                   'Ok',
-                  //                   style:
-                  //                   TextStyle(color: Colors.blue.shade700),
-                  //                 ))
-                  //           ],
-                  //         );
-                  //       });
-                  // } else {
-                  //   setState(() {
-                  //     databaseHelper.AddCustomer(
-                  //         _firstController.text.trim(),
-                  //         _lastController.text.trim(),
-                  //         _addressController.text.trim(),
-                  //         _emailController.text.trim(),
-                  //         _phoneController.text.trim(),
-                  //         _currentBalanceController.text.trim(),
-                  //         _myProgram.trim());
-                  //   });
+                  if (_discountController.text.trim().isEmpty ||
+                      _maxDiscountController.text.trim().isEmpty ||
+                      _myServices.trim().isEmpty ||
+                      _myProgram.trim().isEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: new Text(
+                              'Complete',
+                              style:
+                              TextStyle(color: Colors.blueAccent.shade700),
+                            ),
+                            content:
+                            Text("Please input the required information"),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: new Text(
+                                    'Ok',
+                                    style:
+                                    TextStyle(color: Colors.blue.shade700),
+                                  ))
+                            ],
+                          );
+                        });
+                  } else {
+                    setState(() {
+                      databaseHelper.AddService(
+                          _myProgram.trim(),
+                          _myServices.trim(),
+                          _discountController.text.trim(),
+                          _maxDiscountController.text.trim(),);
+                    });
                     Navigator.of(context).pop(new MaterialPageRoute(
                       builder: (BuildContext context) => new Home(),
                     ));
-               //   }
+                  }
                 },
                 child: Text(
                   "Add",

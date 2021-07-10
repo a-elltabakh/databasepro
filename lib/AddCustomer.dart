@@ -29,7 +29,7 @@ class _AddCustomerState extends State<AddCustomer> {
 
   Future<String> GetPrograms() async {
     final response = await http.get(
-      Uri.parse("https://insurance-sys.herokuapp.com/program/get-program/"),
+      Uri.parse("https://insurance-sys.herokuapp.com/program/get-programs/"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -88,7 +88,7 @@ class _AddCustomerState extends State<AddCustomer> {
                   items: programs?.map((item) {
                         return new DropdownMenuItem(
                           child: new Text(item['programName']),
-                          value: item['programID'].toString(),
+                          value: item['ProgramID'].toString(),
                         );
                       })?.toList() ??
                       [],
@@ -101,7 +101,7 @@ class _AddCustomerState extends State<AddCustomer> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _firstController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
@@ -117,7 +117,7 @@ class _AddCustomerState extends State<AddCustomer> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _lastController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
@@ -133,7 +133,7 @@ class _AddCustomerState extends State<AddCustomer> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _addressController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
@@ -149,7 +149,7 @@ class _AddCustomerState extends State<AddCustomer> {
               margin: EdgeInsets.only(left: 22, right: 22),
               child: new TextField(
                 controller: _phoneController,
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
@@ -171,6 +171,22 @@ class _AddCustomerState extends State<AddCustomer> {
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Email',
                   prefixIcon: new Icon(Icons.mail_rounded,
+                      color: Colors.blueAccent.shade700),
+                ),
+              ),
+            ),
+            SizedBox(height: 15),
+            new Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(left: 22, right: 22),
+              child: new TextField(
+                controller: _currentBalanceController,
+                keyboardType: TextInputType.number,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(67)),
+                  labelText: 'Current Balance',
+                  prefixIcon: new Icon(Icons.attach_money_rounded,
                       color: Colors.blueAccent.shade700),
                 ),
               ),
