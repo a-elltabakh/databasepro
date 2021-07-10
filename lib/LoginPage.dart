@@ -10,22 +10,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // read() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final key = 'token';
-  //   final value = prefs.get(key) ?? 0;
-  //   if (value != '0') {
-  //     Navigator.of(context).push(
-  //         new MaterialPageRoute(
-  //           builder: (BuildContext context) => new Home(),
-  //         )
-  //     );
-  //   }
-  // }
+
 
   @override
   initState() {
-   // read();
   }
 
   DatabaseHelper databaseHelper = new DatabaseHelper();
@@ -128,12 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                           );
                         });
                   }
-                  //else {
-                  //   setState(() {
-                  //     databaseHelper.loginData(
-                  //         _emailController.text.trim().toLowerCase(),
-                  //         _passwordController.text.trim());
-                  //   });
+                  else {
+                    setState(() {
+                      databaseHelper.loginData(
+                          _emailController.text.trim().toLowerCase(),
+                          _passwordController.text.trim());
+                    });
 
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -141,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                           builder: (BuildContext context) => Home()),
                       ModalRoute.withName('/Home'),
                     );
-                //  }
+                 }
                 },
                 child: Text(
                   "Login",

@@ -1,10 +1,20 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DatabaseHelper {
-  var status;
-  var token;
+
+Future<Login> loginData(String email, String password) async {
+  final response = await http.post(
+      Uri.parse("https://host.com/signin/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, String>{"username": "$email", "password": "$password"}));
+  print(response.statusCode);
+
+}
+
 
   Future<Company> CreateCompany(String name,String password,String email,String adress,) async {
     final response = await http.post(
@@ -97,6 +107,19 @@ class DatabaseHelper {
   }
 }
 
+class Login {
+  final String email;
+  final String password;
+
+  Login({this.email, this.password});
+  factory Login.fromJson(Map<String, dynamic> json) {
+    return Login(
+      email: json['email'],
+      password: json['password'],
+    );
+  }
+}
+
 class Company {
   final String name;
   final String email;
@@ -176,48 +199,6 @@ class Service {
   }
 }
 
-// _save(String token) async {
-//   final prefs = await SharedPreferences.getInstance();
-//   final key = 'token';
-//   final value = token;
-//   prefs.setString(key, value);
-// }
-//
-// read() async {
-//   final prefs = await SharedPreferences.getInstance();
-//   final key = 'token';
-//   final value = prefs.get(key) ?? 0;
-//   print('read : $value');
-// }
 
-// Future<Login> loginData(String email, String password) async {
-//   final response = await http.post(
-//       Uri.parse("https://host.com/signin/"),
-//       headers: <String, String>{
-//         'Content-Type': 'application/json; charset=UTF-8',
-//       },
-//       body: jsonEncode(
-//           <String, String>{"username": "$email", "password": "$password"}));
-//   print(response.statusCode);
-//   var data = json.decode(response.body);
-//   if (status = response.body.contains('non_field_errors')) {
-//     print('data : ${data["non_field_errors"]}');
-//   } else {
-//     print('data : ${data["token"]}');
-//     _save(data["token"]);
-//   }
-// }
-// }
-//
-// class Login {
-//   final String email;
-//   final String password;
-//
-//   Login({this.email, this.password});
-//   factory Login.fromJson(Map<String, dynamic> json) {
-//     return Login(
-//       email: json['email'],
-//       password: json['password'],
-//     );
-//   }
-// }
+
+
