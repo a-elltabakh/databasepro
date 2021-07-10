@@ -103,31 +103,32 @@ class _LoginPageState extends State<LoginPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30)),
                 onPressed: () {
-                  // if (_emailController.text.trim().isEmpty ||
-                  //     _passwordController.text.trim().isEmpty) {
-                  //   showDialog(
-                  //       context: context,
-                  //       builder: (context) {
-                  //         return AlertDialog(
-                  //           title: new Text(
-                  //             'Complete',
-                  //             style: TextStyle(color: Colors.blueAccent.shade700),
-                  //           ),
-                  //           content:
-                  //               Text("Please input your email and password"),
-                  //           actions: [
-                  //             FlatButton(
-                  //                 onPressed: () {
-                  //                   Navigator.pop(context);
-                  //                 },
-                  //                 child: new Text(
-                  //                   'Ok',
-                  //                   style: TextStyle(color: Colors.blue.shade700),
-                  //                 ))
-                  //           ],
-                  //         );
-                  //       });
-                  // } else {
+                  if (_emailController.text.trim().isEmpty ||
+                      _passwordController.text.trim().isEmpty) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: new Text(
+                              'Complete',
+                              style: TextStyle(color: Colors.blueAccent.shade700),
+                            ),
+                            content:
+                                Text("Please input your email and password"),
+                            actions: [
+                              FlatButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: new Text(
+                                    'Ok',
+                                    style: TextStyle(color: Colors.blue.shade700),
+                                  ))
+                            ],
+                          );
+                        });
+                  }
+                  //else {
                   //   setState(() {
                   //     databaseHelper.loginData(
                   //         _emailController.text.trim().toLowerCase(),

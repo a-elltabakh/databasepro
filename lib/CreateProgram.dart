@@ -102,6 +102,8 @@ class _CreateProgramState extends State<CreateProgram> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Program Name',
+                  prefixIcon: new Icon(Icons.person_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
@@ -116,6 +118,8 @@ class _CreateProgramState extends State<CreateProgram> {
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(67)),
                   labelText: 'Max Balance',
+                  prefixIcon: new Icon(Icons.attach_money_rounded,
+                      color: Colors.blueAccent.shade700),
                 ),
               ),
             ),
